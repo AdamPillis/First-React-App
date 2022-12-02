@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ExpenseItem from './ExpenseItem';
 import Card from '../UI/Card';
 import ExpensesFilter from './ExpensesFilter';
+import ExpensesList from './ExpensesList';
 import './Expenses.css';
 
 const Expenses = (props) => {
@@ -12,23 +13,20 @@ const Expenses = (props) => {
     setFilteredYear(selectedYear)
     console.log(selectedYear)
   }
+
+  const filteredExpenses = props.items.filter(expense => {
+    return expense.date.getFullYear() === parseInt(filteredYear);
+  });
+  
   return (
     <div>
       <Card className="expenses">
         <ExpensesFilter selected={filteredYear} onChangeFilter={filterChangeHandler}/>
-        {/* filter props data by finding full date, make sure to match filteredYear and create array based on chose year */}
-        {/* transfer array of expense objects into jsx expenseitem using map*/}
-        {props.items.filter((expense) => expense.date.getFullYear() === parseInt(filteredYear)).map((expense) => (
-          <ExpenseItem
-            key={expense.id}
-            title={expense.title}
-            amount={expense.amount}
-            date={expense.date}
-          />
-        ))}
+        {/* displaying expenses content default message or display items using of condition*/}
+        <ExpensesList items={filteredExpenses} />
       </Card>
     </div>
   );
 };
 
-export default Expenses
+export default Expenses;
